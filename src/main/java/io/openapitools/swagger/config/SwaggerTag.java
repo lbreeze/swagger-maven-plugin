@@ -29,6 +29,10 @@ public class SwaggerTag {
     @Parameter
     private Map<String, Object> extensions;
 
+    /**
+     * Creates swagger tag
+     * @return created tag
+     */
     public Tag createTagModel(){
         Tag tag = new Tag();
 

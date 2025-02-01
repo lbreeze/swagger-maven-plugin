@@ -8,8 +8,8 @@ OpenAPI documentation from a JAX-RS based REST service with as little change as 
 
 The plugin is considered production ready. The version 2.x.x of the plugin is supporting generation of OpenAPI version 3 specifications using Swagger 2.x. To generate OpenAPI version 2 specifications using Swagger 1.x use the latest 1.x.x version of the plugin.
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.openapitools.swagger/swagger-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.openapitools.swagger/swagger-maven-plugin/)
-[![Javadoc](https://javadoc.io/badge/io.openapitools.swagger/swagger-maven-plugin/badge.svg)](https://www.javadoc.io/doc/io.openapitools.swagger/swagger-maven-plugin)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.lbreeze/swagger-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.lbreeze/swagger-maven-plugin/)
+[![Javadoc](https://javadoc.io/badge/io.github.lbreeze/swagger-maven-plugin/badge.svg)](https://www.javadoc.io/doc/io.github.lbreeze/swagger-maven-plugin)
 [![Build status](https://travis-ci.org/openapi-tools/swagger-maven-plugin.svg?branch=master)](https://travis-ci.org/openapi-tools/swagger-maven-plugin)
 [![Known Vulnerabilities](https://snyk.io/test/github/openapi-tools/swagger-maven-plugin/badge.svg)](https://snyk.io/test/github/openapi-tools/swagger-maven-plugin) 
 
@@ -23,17 +23,18 @@ To have Swagger generate the OpenAPI specifications as part of the build add in 
   <plugins>
     ...
     <plugin>
-      <groupId>io.openapitools.swagger</groupId>
+      <groupId>io.github.lbreeze</groupId>
       <artifactId>swagger-maven-plugin</artifactId>
       <configuration>
         <resourcePackages>
-          <resourcePackage>io.openapitools.swagger.example</resourcePackage>
-          <resourcePackage>io.openapitools.swagger.example.alternate</resourcePackage>
+          <resourcePackage>my.company.package.api</resourcePackage>
+          <resourcePackage>my.company.package.api.v2</resourcePackage>
         </resourcePackages>
         <outputDirectory>${basedir}/target/</outputDirectory>
         <outputFilename>swagger</outputFilename>
         <outputFormats>JSON,YAML</outputFormats>
         <prettyPrint>true</prettyPrint>
+        <lagom>true</lagom>
       </configuration>
       <executions>
         <execution>
@@ -52,7 +53,11 @@ This will run the generation in the prepare-package lifecycle stage of the Maven
 
 ## Specifying Packages with JAX-RS Endpoints
 
-The packages containing JAX-RS endpoints must be configured using the resourcePackages element. See the minimal configuration above.
+The packages containing JAX-RS endpoints must be configured using the `resourcePackages` element. See the minimal configuration above.
+
+## Lagom support
+
+To add Lagom configuration support you have to set `lagom` property to `true`. When using fully swagger-compliant API definition you have to set it to `false`
 
 ## Properties of Swagger model
 
@@ -60,7 +65,7 @@ Most general properties of the Swagger model is configurable using the swaggerCo
 
 ```xml
 <plugin>
-  <groupId>io.openapitools.swagger</groupId>
+  <groupId>io.github.lbreeze</groupId>
   <artifactId>swagger-maven-plugin</artifactId>
   <configuration>
     <swaggerConfig>
@@ -99,7 +104,7 @@ The generated OpenAPI specifications may be installed and deployed as Maven arti
 
 ```xml
 <plugin>
-  <groupId>io.openapitools.swagger</groupId>
+  <groupId>io.github.lbreeze</groupId>
   <artifactId>swagger-maven-plugin</artifactId>
   <configuration>
     <attachSwaggerArtifact>true</attachSwaggerArtifact>
@@ -107,5 +112,6 @@ The generated OpenAPI specifications may be installed and deployed as Maven arti
 
 # Acknowledgement
 
-Thanks to [Yukai Kong](https://github.com/kongchen) for his work on
-[Swagger Maven plugin](https://github.com/kongchen/swagger-maven-plugin). This plugin is heavily inspired by that.
+Based on and forked from [OpenAPI Tools](https://github.com/openapi-tools/swagger-maven-plugin) swagger plugin.
+
+Thanks to [Thor Anker Kvisgård Lange](https://github.com/langecode) for his contribution.

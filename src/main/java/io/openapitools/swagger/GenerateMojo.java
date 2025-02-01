@@ -40,6 +40,12 @@ public class GenerateMojo extends AbstractMojo {
     private Boolean skip;
 
     /**
+     * Use Lagom reader
+     */
+    @Parameter(required = false, defaultValue = "false")
+    private Boolean lagom;
+
+    /**
      * Static information to provide for the generation.
      */
     @Parameter
@@ -117,7 +123,9 @@ public class GenerateMojo extends AbstractMojo {
             // set the TCCL before everything else
             Thread.currentThread().setContextClassLoader(clzLoader);
 
-            Reader reader = new Reader(swaggerConfig == null ? new OpenAPI() : swaggerConfig.createSwaggerModel());
+            Reader reader = lagom ?
+                new LagomReader(swaggerConfig == null ? new OpenAPI() : swaggerConfig.createSwaggerModel()) :
+                new Reader(swaggerConfig == null ? new OpenAPI() : swaggerConfig.createSwaggerModel());
 
             JaxRSScanner reflectiveScanner = new JaxRSScanner(getLog(), resourcePackages, useResourcePackagesChildren);
 
@@ -125,6 +133,9 @@ public class GenerateMojo extends AbstractMojo {
             reader.setApplication(application);
 
             OpenAPI swagger = OpenAPISorter.sort(reader.read(reflectiveScanner.classes()));
+            if (lagom && swagger.getTags().isEmpty()) {
+                swagger.setTags(null);
+            }
 
             if (outputDirectory.mkdirs()) {
                 getLog().debug("Created output directory " + outputDirectory);
